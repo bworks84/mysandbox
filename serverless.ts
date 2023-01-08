@@ -1,6 +1,5 @@
 import type { AWS } from '@serverless/typescript';
-
-import hello from '@functions/hello';
+import functions from './serverless/functions';
 
 const serverlessConfiguration: AWS = {
   service: 'mysandbox',
@@ -20,8 +19,8 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },
   },
-  // import the function via paths
-  functions: { hello },
+  // import the function from ./serverless/functions.ts
+  functions,
   package: { individually: true },
   custom: {
     esbuild: {
