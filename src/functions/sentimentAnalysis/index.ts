@@ -1,6 +1,13 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { formatJSONResponse } from '@libs/api-gateway';
+import { 
+  ComprehendClient, 
+  DetectSentimentCommand, 
+  DetectSentimentCommandInput 
+} from '@aws-sdk/client-comprehend';
 
+
+const comprehendClient = new ComprehendClient({});
 
 export const handler = async (event: APIGatewayProxyEvent) => {
   try {
@@ -25,8 +32,12 @@ export const handler = async (event: APIGatewayProxyEvent) => {
 };
 
 const analyseSentiment = async ({ text }: { text: string }) => {
-  return {
-    textAnalysed: text,
-    result: 'fake'
+  const input: DetectSentimentCommandInput = {
+    Text: text, 
+    LanguageCode: 'en'
   }
+
+  const command = new DetectSentimentCommand(input);
+  const response = await comprehendClient.send(command);
+  return response
 };
